@@ -1,5 +1,13 @@
 .App {
   text-align: center;
+  width: 800px;
+  margin: auto;
+}
+
+.App-result {
+  border-radius: 5px;
+  border: 1px solid #004d40;
+  padding: 10px; 
 }
 
 .App-logo {
