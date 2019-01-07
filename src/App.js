@@ -40,7 +40,7 @@ const ResultHeader = (props) => {
             value={ props.total } 
             displayType={ 'text' } 
             thousandSeparator={ true }
-            prefix={ '$ ' }
+            prefix={ '$' }
             decimalScale={ 2 }
             fixedDecimalScale={ true }>  
           </NumberFormat>
@@ -65,10 +65,8 @@ const ResultHeader = (props) => {
   }
 
   return (
-    <div>
-      <h6>
-        { hdr }
-      </h6>
+    <div style={{fontSize: '14px'}}>
+      { hdr }
       <hr />
     </div>
   );
@@ -77,21 +75,19 @@ const ResultHeader = (props) => {
 const ResultChart = (props) => {
   /* Get specific values from props */
   let chartLabels = props.output.map(i => i.year);
-  let chartInvested = props.output.map(i => Math.round(i.totalDeposit));
-  let chartInterest = props.output.map(i => Math.round(i.totalInterest));
+  let chartInvested = props.output.map(i => i.totalDeposit);
+  let chartInterest = props.output.map(i => i.totalInterest);
 
   let data = {
     labels: chartLabels,
     datasets: [{
-      label: 'Invested ($)',
-      stack: 'stack_',
+      label: 'Investment',
       backgroundColor: 'rgba(75, 192, 192, 0.4)',
       borderColor: 'rgb(75, 192, 192)',
       borderWidth: 1,
       data: chartInvested
     }, {
-      label: 'Interest ($)',
-      stack: 'stack_',
+      label: 'Interest',
       backgroundColor: 'rgba(54, 162, 235, 0.4)',
       borderColor: 'rgb(54, 162, 235)',
       borderWidth: 1,
@@ -99,11 +95,40 @@ const ResultChart = (props) => {
     }]
   };
 
-  console.log(props.output);
+  let options = {
+    scales: {
+      xAxes: [{ stacked: true }],
+      yAxes: [{ stacked: true }]
+    },
+    /* From stackoverflow */
+    /* https://stackoverflow.com/questions/39373561/how-get-sum-of-total-values-in-stackedbar-chartjs */
+    tooltips: {
+      mode: 'label',
+      callbacks: {
+        label: function(tooltipItem, data) {
+          let tooltipLabel = data.datasets[tooltipItem.datasetIndex].label;
+          let tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+          // Loop through all datasets to get the actual total of the index
+          let total = 0;
+          for (let i = 0; i < data.datasets.length; i++)
+              total += data.datasets[i].data[tooltipItem.index];
+
+          // If it is not the last dataset, you display it as you usually do
+          if (tooltipItem.datasetIndex !== data.datasets.length - 1) {
+              return tooltipLabel + ": $" + tooltipValue.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+          } else { // .. else, you display the dataset and the total, using an array
+              return [tooltipLabel + ": $" + tooltipValue.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'), 
+                "Total: $" + total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')];
+          }
+        }
+      }
+    }
+  };
 
   return (
     <div>
-      <Bar data={ data }></Bar>
+      <Bar data={ data } options={ options }></Bar>
     </div>
   );
 };
@@ -116,38 +141,33 @@ const Result = (props) => {
       <ResultHeader years={ idx } total={ props.output[idx].totalValue }/>
 
       <div>
-        <div className="row" style={{textAlign: 'left'}}>
+        <div className="row" style={{textAlign: 'left', fontSize: '12px'}}>
           <div className="col s3">
             Total investment :
+            <br />
+            Total interest :
           </div>
           <div className="col s9">
             <NumberFormat 
               value={ props.output[idx].totalDeposit } 
               displayType={ 'text' } 
               thousandSeparator={true}
-              prefix={ '$ ' }
+              prefix={ '$' }
               decimalScale={ 2 }
               fixedDecimalScale={ true }>  
             </NumberFormat>
-          </div>
-        </div>
-        <div className="row" style={{textAlign: 'left'}}>
-          <div className="col s3">
-            Total interest :
-          </div>
-          <div className="col s9">
+            <br />
             <NumberFormat 
               value={ props.output[idx].totalInterest } 
               displayType={ 'text' } 
               thousandSeparator={true}
-              prefix={ '$ ' }
+              prefix={ '$' }
               decimalScale={ 2 }
               fixedDecimalScale={ true }>  
             </NumberFormat>
           </div>
         </div>
         <hr />
-        
         <div className="row">
           <div className="col s12">
             <ResultChart output={ props.output }/>
@@ -248,7 +268,7 @@ class InputDetails extends Component {
                   onChange={ this.handleChange } 
                   type="number"
                   className="validate" />
-                <label htmlFor="initialAmount">Initial Amount ($)</label>
+                <label htmlFor="initialAmount">Initial Investment ($)</label>
               </div>
             </div>
             <div className="row">
@@ -259,7 +279,7 @@ class InputDetails extends Component {
                   onChange={ this.handleChange } 
                   type="number" 
                   className="validate" />
-                <label htmlFor="annualDeposit">Annual Deposit ($)</label>
+                <label htmlFor="annualDeposit">Annual Addition ($)</label>
               </div>
             </div>
             <div className="row">
