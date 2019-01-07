@@ -9,13 +9,23 @@ import 'materialize-css/dist/css/materialize.min.css';
 /* Chart.js */
 import { Bar } from 'react-chartjs-2';
 
+/* React-notify-toast */
+import Notifications, {notify} from 'react-notify-toast';
+
 const Header = (props) => {
   return (
-    <div className="card teal darken-4">
-      <div className="card-content white-text">
-        <span className="card-title">Compound Interest Calculator</span>
+    <header>
+      <div className="row teal darken-4 white-text card">
+        <div className="col s1">
+        </div>
+        <div className="col s10">
+          <h5>Compound Interest Calculator</h5>
+        </div>
+        <div className="col s1">
+          <img src="./ApcLogo.png" alt="Apc" length="55px" width="55px"></img>
+        </div>
       </div>
-    </div>
+    </header>
   );
 };
 
@@ -250,6 +260,12 @@ class InputDetails extends Component {
     let name = event.target.id;
     let value = event.target.value;
 
+    /* Validation here */
+    if (value < 0) {
+      notify.show('Please enter a positive value', 'warning');
+      return;
+    } 
+
     this.setState(prevState => ({
       [name]: value,
     }), this.calcYearValues);
@@ -267,8 +283,9 @@ class InputDetails extends Component {
                   defaultValue={ this.state.initialAmount }
                   onChange={ this.handleChange } 
                   type="number"
-                  className="validate" />
-                <label htmlFor="initialAmount">Initial Investment ($)</label>
+                  className="validate" 
+                  min="0" />
+                <label htmlFor="initialAmount">Initial Amount ($)</label>
               </div>
             </div>
             <div className="row">
@@ -278,8 +295,9 @@ class InputDetails extends Component {
                   defaultValue={ this.state.annualDeposit } 
                   onChange={ this.handleChange } 
                   type="number" 
-                  className="validate" />
-                <label htmlFor="annualDeposit">Annual Addition ($)</label>
+                  className="validate"
+                  min="0" />
+                <label htmlFor="annualDeposit">Annual Deposit ($)</label>
               </div>
             </div>
             <div className="row">
@@ -289,7 +307,8 @@ class InputDetails extends Component {
                   defaultValue={ this.state.interest } 
                   onChange={ this.handleChange } 
                   type="number" 
-                  className="validate" />
+                  className="validate"
+                  min="0" />
                 <label htmlFor="interest">Interest Rate (%)</label>
               </div>
             </div>
@@ -300,7 +319,8 @@ class InputDetails extends Component {
                   defaultValue={ this.state.yearsToGrow } 
                   onChange={ this.handleChange } 
                   type="number" 
-                  className="validate" />
+                  className="validate"
+                  min="0" />
                 <label htmlFor="yearsToGrow">Years To Grow</label>
               </div>
             </div>
@@ -318,6 +338,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <Notifications />
         <Header />
         <InputDetails />
         <Footer />
