@@ -175,7 +175,62 @@ const Result = (props) => {
   ); 
 };
 
-class InputDetails extends Component {
+const InputDetails = (props) => {
+  return (
+    <form>
+      <div className="row">
+        <div className="input-field">
+          <input 
+            id="initialAmount"
+            defaultValue={ props.initialAmount }
+            onChange={ props.handleChange } 
+            type="number"
+            className="validate" 
+            min="0" />
+          <label htmlFor="initialAmount">Initial Amount ($)</label>
+        </div>
+      </div>
+      <div className="row">
+        <div className="input-field">
+          <input 
+            id="annualDeposit" 
+            defaultValue={ props.annualDeposit } 
+            onChange={ props.handleChange } 
+            type="number" 
+            className="validate"
+            min="0" />
+          <label htmlFor="annualDeposit">Annual Deposit ($)</label>
+        </div>
+      </div>
+      <div className="row">
+        <div className="input-field">
+          <input 
+            id="interest" 
+            defaultValue={ props.interest } 
+            onChange={ props.handleChange } 
+            type="number" 
+            className="validate"
+            min="0" />
+          <label htmlFor="interest">Interest Rate (%)</label>
+        </div>
+      </div>
+      <div className="row">
+        <div className="input-field">
+          <input 
+            id="yearsToGrow" 
+            defaultValue={ props.yearsToGrow } 
+            onChange={ props.handleChange } 
+            type="number" 
+            className="validate"
+            min="0" />
+          <label htmlFor="yearsToGrow">Years To Grow</label>
+        </div>
+      </div>
+    </form>
+  );
+};
+
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -250,88 +305,36 @@ class InputDetails extends Component {
     this.setState(prevState => ({
       [name]: value,
     }), this.calcYearValues);
-  }
+  };
 
   render() {
     let idx = this.state.output.length - 1;
 
     return (
-      <div className="row">
-        <div className="col s3">
-          <form>
-            <div className="row">
-              <div className="input-field">
-                <input 
-                  id="initialAmount"
-                  defaultValue={ this.state.initialAmount }
-                  onChange={ this.handleChange } 
-                  type="number"
-                  className="validate" 
-                  min="0" />
-                <label htmlFor="initialAmount">Initial Amount ($)</label>
-              </div>
-            </div>
-            <div className="row">
-              <div className="input-field">
-                <input 
-                  id="annualDeposit" 
-                  defaultValue={ this.state.annualDeposit } 
-                  onChange={ this.handleChange } 
-                  type="number" 
-                  className="validate"
-                  min="0" />
-                <label htmlFor="annualDeposit">Annual Deposit ($)</label>
-              </div>
-            </div>
-            <div className="row">
-              <div className="input-field">
-                <input 
-                  id="interest" 
-                  defaultValue={ this.state.interest } 
-                  onChange={ this.handleChange } 
-                  type="number" 
-                  className="validate"
-                  min="0" />
-                <label htmlFor="interest">Interest Rate (%)</label>
-              </div>
-            </div>
-            <div className="row">
-              <div className="input-field">
-                <input 
-                  id="yearsToGrow" 
-                  defaultValue={ this.state.yearsToGrow } 
-                  onChange={ this.handleChange } 
-                  type="number" 
-                  className="validate"
-                  min="0" />
-                <label htmlFor="yearsToGrow">Years To Grow</label>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div className="col s9 App-">
-          <div className="App-result">
-            <ResultHeader years={ idx } total={ this.state.output[idx].totalValue }/>
-            <hr />
-            <Result 
-              totalDeposit={ this.state.output[idx].totalDeposit } 
-              totalInterest={ this.state.output[idx].totalInterest }/>
-            <hr />
-            <ResultChart output={ this.state.output }/>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-class App extends Component {
-  render() {
-    return (
       <div className="App">
         <Notifications />
         <Header />
-        <InputDetails />
+        <div className="row">
+          <div className="col s3">
+            <InputDetails 
+              initialAmount={ this.state.initialAmount }
+              annualDeposit={ this.state.annualDeposit }
+              interest={ this.state.interest }
+              yearsToGrow={ this.state.yearsToGrow }
+              handleChange={ this.handleChange }/>
+          </div>
+          <div className="col s9">
+            <div className="App-result">
+              <ResultHeader years={ idx } total={ this.state.output[idx].totalValue }/>
+              <hr />
+              <Result 
+                totalDeposit={ this.state.output[idx].totalDeposit } 
+                totalInterest={ this.state.output[idx].totalInterest }/>
+              <hr />
+              <ResultChart output={ this.state.output }/>
+            </div>
+          </div>
+        </div>
         <Footer />
       </div>
     );
