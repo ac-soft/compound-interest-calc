@@ -221,11 +221,6 @@ class InputDetails extends Component {
     let int = this.state.interest ? this.state.interest : 0;
 
     let tYearString = (new Date()).getFullYear();
-
-    if (yrs > 100) {
-      console.log("Maximum of 100 years");
-      yrs = 100;
-    }
   
     for(let i = 0; i <= yrs; i++) {
       if (i === 0) {
@@ -264,7 +259,10 @@ class InputDetails extends Component {
     if (value < 0) {
       notify.show('Please enter a positive value', 'warning');
       return;
-    } 
+    } else if (name === "yearsToGrow" && value > 100) {
+      notify.show('Years to grow has a maximum value of 100', 'warning');
+      value = 100;
+    }
 
     this.setState(prevState => ({
       [name]: value,
