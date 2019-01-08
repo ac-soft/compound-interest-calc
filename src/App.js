@@ -77,7 +77,6 @@ const ResultHeader = (props) => {
   return (
     <div style={{fontSize: '14px'}}>
       { hdr }
-      <hr />
     </div>
   );
 };
@@ -144,44 +143,32 @@ const ResultChart = (props) => {
 };
 
 const Result = (props) => {
-  let idx = props.output.length - 1;
-
   return (
-    <div className="App-result">
-      <ResultHeader years={ idx } total={ props.output[idx].totalValue }/>
-
-      <div>
-        <div className="row" style={{textAlign: 'left', fontSize: '12px'}}>
-          <div className="col s3">
-            Total investment :
-            <br />
-            Total interest :
-          </div>
-          <div className="col s9">
-            <NumberFormat 
-              value={ props.output[idx].totalDeposit } 
-              displayType={ 'text' } 
-              thousandSeparator={true}
-              prefix={ '$' }
-              decimalScale={ 2 }
-              fixedDecimalScale={ true }>  
-            </NumberFormat>
-            <br />
-            <NumberFormat 
-              value={ props.output[idx].totalInterest } 
-              displayType={ 'text' } 
-              thousandSeparator={true}
-              prefix={ '$' }
-              decimalScale={ 2 }
-              fixedDecimalScale={ true }>  
-            </NumberFormat>
-          </div>
+    <div>
+      <div className="row" style={{textAlign: 'left', fontSize: '12px'}}>
+        <div className="col s3">
+          Total investment :
+          <br />
+          Total interest :
         </div>
-        <hr />
-        <div className="row">
-          <div className="col s12">
-            <ResultChart output={ props.output }/>
-          </div>
+        <div className="col s9">
+          <NumberFormat 
+            value={ props.totalDeposit } 
+            displayType={ 'text' } 
+            thousandSeparator={true}
+            prefix={ '$' }
+            decimalScale={ 2 }
+            fixedDecimalScale={ true }>  
+          </NumberFormat>
+          <br />
+          <NumberFormat 
+            value={ props.totalInterest } 
+            displayType={ 'text' } 
+            thousandSeparator={true}
+            prefix={ '$' }
+            decimalScale={ 2 }
+            fixedDecimalScale={ true }>  
+          </NumberFormat>
         </div>
       </div>
     </div>
@@ -206,10 +193,6 @@ class InputDetails extends Component {
 
     this.handleChange = this.handleChange.bind(this);
   }
-
-  getCurrentYear = () => {
-    return new Date().getFullYear();
-  };
 
   calcYearValues = () => {
     let tmp = [];
@@ -270,6 +253,8 @@ class InputDetails extends Component {
   }
 
   render() {
+    let idx = this.state.output.length - 1;
+
     return (
       <div className="row">
         <div className="col s3">
@@ -324,8 +309,16 @@ class InputDetails extends Component {
             </div>
           </form>
         </div>
-        <div className="col s9">
-          <Result output={ this.state.output }/>
+        <div className="col s9 App-">
+          <div className="App-result">
+            <ResultHeader years={ idx } total={ this.state.output[idx].totalValue }/>
+            <hr />
+            <Result 
+              totalDeposit={ this.state.output[idx].totalDeposit } 
+              totalInterest={ this.state.output[idx].totalInterest }/>
+            <hr />
+            <ResultChart output={ this.state.output }/>
+          </div>
         </div>
       </div>
     );
