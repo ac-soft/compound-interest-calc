@@ -10,7 +10,7 @@ import 'materialize-css/dist/css/materialize.min.css';
 import { Bar } from 'react-chartjs-2';
 
 /* React-notify-toast */
-import Notifications, {notify} from 'react-notify-toast';
+import Notifications, { notify } from 'react-notify-toast';
 
 const Header = (props) => {
   return (
@@ -34,7 +34,7 @@ const Footer = (props) => {
     <div style={{fontSize: '11px'}}>
       <hr />
       <span><p><b>Interactive Application using ES6 with React</b></p></span>
-      <span><p>© 2019 Copyright APC</p></span>
+      <span><p>© 2019 Copyright AC-Soft</p></span>
     </div>
   );
 };
@@ -199,7 +199,7 @@ const InputDetails = (props) => {
             type="number" 
             className="validate"
             min="0" />
-          <label htmlFor="annualDeposit">Annual Deposit ($)</label>
+          <label htmlFor="annualDeposit">Annual Addition ($)</label>
         </div>
       </div>
       <div className="row">
