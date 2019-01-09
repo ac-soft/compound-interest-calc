@@ -91,13 +91,13 @@ const ResultChart = (props) => {
     labels: chartLabels,
     datasets: [{
       label: 'Investment',
-      backgroundColor: 'rgba(75, 192, 192, 0.4)',
+      backgroundColor: 'rgba(75, 192, 192, 0.7)',
       borderColor: 'rgb(75, 192, 192)',
       borderWidth: 1,
       data: chartInvested
     }, {
       label: 'Interest',
-      backgroundColor: 'rgba(54, 162, 235, 0.4)',
+      backgroundColor: 'rgba(54, 162, 235, 0.7)',
       borderColor: 'rgb(54, 162, 235)',
       borderWidth: 1,
       data: chartInterest
